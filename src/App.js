@@ -7,8 +7,7 @@ import { useStateValue } from "./StateProvider";
 const spotify = new SpotifyWebApi();
 
 const App = () => {
-  const [token, setToken] = useState(null);
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, token }, dispatch] = useStateValue();
 
   // runs code based on a given condition
   useEffect(() => {
@@ -17,7 +16,11 @@ const App = () => {
     const _token = hash.access_token;
 
     if (_token) {
-      setToken(_token);
+      dispatch({
+        type: "SET_TOKEN",
+        token: _token,
+      });
+
       spotify.setAccessToken(_token);
 
       // returns user profile
@@ -25,11 +28,13 @@ const App = () => {
         dispatch({ type: "SET_USER", user: user });
       });
     }
-
-    // console.log("I HAVE A TOKEN >>>", token);
   }, []);
-  console.log(user);
-  return <div className="app">{token ? <Player /> : <Login />}</div>;
+
+  return (
+    <div className="app">
+      {token ? <Player spotify={spotify} /> : <Login />}
+    </div>
+  );
 };
 
 export default App;
