@@ -2,10 +2,12 @@
   --spotify-green: #1db954;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 * {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 body {
